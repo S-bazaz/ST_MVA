@@ -87,7 +87,18 @@ def load_ecg(dct_data, root_path, sampling_rate=100, ecg_ids=None):
     dct_data["ecg"] = filenames.apply(load_signal).to_numpy()
 
 
-
+def load_ecg_from_clean_data(df_clean, root_path, patient_ids=None):
+    ecg_path = root_path.joinpath("raw_data","ecg_data")
+    load_signal = lambda path : wfdb.rdsamp(
+        str(ecg_path.joinpath(path))
+        )[0] 
+    if patient_ids:
+        filenames = df_clean.loc[df_clean["patient_id"].isin(patient_ids), "filename_hr"]
+    else:
+        filenames = df_clean["filename_hr"]
+    signals = filenames.apply(load_signal).to_numpy()
+    print("signals shapes: ", signals.shape)
+    return signals
 
 #######################
 #   get superclass    #
