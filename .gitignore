@@ -25,4 +25,4 @@ TestResults.xml
 *.dat
 *.hea
 *.csv
-
+*.pkl
