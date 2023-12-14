@@ -87,7 +87,7 @@ def load_ecg(dct_data, root_path, sampling_rate=100, ecg_ids=None):
     dct_data["ecg"] = filenames.apply(load_signal).to_numpy()
 
 
-def load_ecg_from_clean_data(df_clean, root_path, patient_ids=None):
+def load_ecg_from_clean_data(df_clean, root_path, patient_ids=None, nsig = None):
     ecg_path = root_path.joinpath("raw_data","ecg_data")
     load_signal = lambda path : wfdb.rdsamp(
         str(ecg_path.joinpath(path))
@@ -98,7 +98,7 @@ def load_ecg_from_clean_data(df_clean, root_path, patient_ids=None):
         filenames = df_clean["filename_hr"]
     signals = filenames.apply(load_signal).to_numpy()
     print("signals shapes: ", signals.shape)
-    return signals
+    return signals, df_clean.loc[df_clean["patient_id"].isin(patient_ids), "patient_id"]
 
 #######################
 #   get superclass    #
@@ -151,45 +151,12 @@ def describ_raw_df(df):
             print(unique_val)
             
 
-def plot_all_st(X, clustering=None, title="<b>Signals</b>"):
-    """
-    Plot multiple signals in a single interactive Plotly figure.
+############################
+#   get selection by diag  #
+############################
 
-    Args:
-        X (list of arrays): A list of signal arrays to be plotted.
-        clustering (list or None, optional): A list of cluster assignments for each signal. 
-            If provided, signals will be color-coded by cluster. Default is None.
-        title (str, optional): The title of the plot. Default is "<b>Signals</b>".
-
-    Returns:
-        None: Displays an interactive Plotly figure with the plotted signals.
-    """
-    
-    fig = go.Figure(
-        layout=go.Layout(
-            height=600, 
-            width=800, 
-            template = "plotly_dark", 
-            title = title
-    ))
-        
-    if clustering:
-        pal = ["palegreen", "darkred"]
-    else:
-        pal = sns.color_palette("Spectral", len(X)).as_hex()
-
-    for i in range(len(X)):
-        if clustering:
-            color = pal[clustering[i]]
-        else:
-            color = pal[i]
-            
-        fig.add_trace(go.Scatter(y=X[i], 
-                                 mode="lines", 
-                                 line=dict(
-                                     width=2,
-                                     color=color,
-                                 ),
-                                 opacity = 0.6
-                                ))
-    fig.show()
+def get_npatients_by_diag(df_clean, npatients = 1):
+    lst_example_signal = []
+    for diag in np.unique(df_clean["diag"]):
+        lst_example_signal.append(df_clean.loc[df_clean["diag"]==diag, "patient_id"][:npatients])
+    return np.concatenate(lst_example_signal)
