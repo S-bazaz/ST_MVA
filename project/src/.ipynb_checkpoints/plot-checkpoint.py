@@ -135,6 +135,7 @@ def plot_scalogram(sig, scales,
     
     fig, ax = plt.subplots(figsize=(6, 5))
     im = ax.contourf(time, np.log2(period), np.log2(power), contourlevels, extend='both',cmap=cmap)
+    
     ax.set_title(title, fontsize=10)
     ax.set_ylabel("Log period (s)", fontsize=8)
     
@@ -148,4 +149,39 @@ def plot_scalogram(sig, scales,
     ax.invert_yaxis()
     ylim = ax.get_ylim()
     ax.set_ylim(ylim[0], -1)
+
+
+def plot_scalogram_freq(sig, scales, 
+                 waveletname = 'cmor', 
+                 levels = np.linspace(1e-1, 3, 40),
+                 title = 'Scalogram of signal', 
+                 fs = 500,
+                 cmap = plt.cm.plasma, 
+                 ):
+    plt.clf()
+    dt = 1/fs
+    n = sig.shape[0]
+    time = np.arange(0, n)/fs
+    [coefficients, frequencies] = pywt.cwt(sig, scales, waveletname, dt)
+    power = (abs(coefficients)) ** 2
+
+    contourlevels = np.log2(levels)
+    
+    fig, ax = plt.subplots(figsize=(6, 5))
+    im = ax.contourf(time, frequencies, np.log2(power), contourlevels, extend='both',cmap=cmap)
+    
+    ax.set_title(title, fontsize=10)
+    ax.set_ylabel("Frequencies (f)", fontsize=8)
+    
+    ax.set_xlabel("Time (s)", fontsize=8)
+    
+    yticks = 2**np.arange(np.ceil(frequencies.min()), np.ceil(frequencies.max()))
+
+    ax.set_yticks(np.log2(yticks))
+    ax.set_yticklabels(yticks)
+
+    ax.invert_yaxis()
+    ylim = ax.get_ylim()
+    ax.set_ylim(ylim[0], -1)
+
     plt.show()

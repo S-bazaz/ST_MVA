@@ -160,3 +160,11 @@ def get_npatients_by_diag(df_clean, npatients = 1):
     for diag in np.unique(df_clean["diag"]):
         lst_example_signal.append(df_clean.loc[df_clean["diag"]==diag, "patient_id"][:npatients])
     return np.concatenate(lst_example_signal)
+
+
+def get_diag(df, patients):
+    return df.loc[df["patient_id"].isin(patients), "diag"]
+
+
+
+    
