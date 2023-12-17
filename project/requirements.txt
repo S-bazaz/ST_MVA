@@ -1,0 +1,8 @@
+ipykernel
+PyWavelets
+numpy
+scipy
+matplotlib
+seaborn
+plotly
+wfdb

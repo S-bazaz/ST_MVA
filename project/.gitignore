@@ -20,9 +20,19 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+#Virtual env
+Scripts
+Lib
+pyvenv.cfg
+share
+Include
+etc
+src/_*
+src/.*
 
 #project
 *.dat
 *.hea
 *.csv
 *.pkl
+*/*.pkl
