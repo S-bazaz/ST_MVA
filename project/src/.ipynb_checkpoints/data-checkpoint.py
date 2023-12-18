@@ -164,4 +164,7 @@ def get_npatients_by_diag(df_clean, npatients = 1):
 
 def get_diag(df, patients):
     return df.loc[df["patient_id"].isin(patients), "diag"]
+
+
+
     

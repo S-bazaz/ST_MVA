@@ -29,8 +29,6 @@ sys.path.insert(0, str(root_path))
 ###################
 #   ploting st    #
 ###################
-
-
 def plot_all_st(X, clustering=None, title="<b>Signals</b>"):
     """
     Plot multiple signals in a single interactive Plotly figure.
@@ -168,14 +166,14 @@ def plot_scalogram_freq(sig, scales,
     contourlevels = np.log2(levels)
     
     fig, ax = plt.subplots(figsize=(6, 5))
-    im = ax.contourf(time, frequencies, np.log2(power), contourlevels, extend='both',cmap=cmap)
+    im = ax.contourf(time, np.log2(frequencies), np.log2(power), contourlevels, extend='both',cmap=cmap)
     
     ax.set_title(title, fontsize=10)
-    ax.set_ylabel("Frequencies (f)", fontsize=8)
+    ax.set_ylabel("Log2 Frequencies (f)", fontsize=8)
     
     ax.set_xlabel("Time (s)", fontsize=8)
     
-    yticks = 2**np.arange(np.ceil(frequencies.min()), np.ceil(frequencies.max()))
+    yticks = 2**np.arange(np.ceil(np.log2(frequencies.min())), np.ceil(np.log2(frequencies.max())))
 
     ax.set_yticks(np.log2(yticks))
     ax.set_yticklabels(yticks)

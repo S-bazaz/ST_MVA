@@ -1,0 +1,10 @@
+ipykernel
+PyWavelets
+numpy
+scipy
+matplotlib
+seaborn
+plotly
+wfdb
+scikit-learn
+prettytable
