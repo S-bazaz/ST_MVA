@@ -1,0 +1,13 @@
+ipykernel
+ruptures
+loadmydata
+geopandas
+pygsp
+contextily
+librosa
+numpy
+matplotlib
+seaborn
+plotly
+prettytable
+nbformat
